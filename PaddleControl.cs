@@ -9,6 +9,10 @@ public partial class PaddleControl : CharacterBody2D
 	public string UpKey = "ui_up";
 	[Export]
 	public string DownKey = "ui_down";
+
+	[Export]
+	public bool IsAIControlled = false;
+	public float AIDirection = 0.0f;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -24,6 +28,11 @@ public partial class PaddleControl : CharacterBody2D
 	{
 		Vector2 velocity = Vector2.Zero;
 		float direction = 0.0f;
+		if (IsAIControlled)
+		{
+			MoveAndSlide();
+			return;
+		}
 		if (Input.IsActionPressed(UpKey)){
 			GD.Print("Up key pressed");
 			direction -= 1.0f;
@@ -36,5 +45,13 @@ public partial class PaddleControl : CharacterBody2D
 		velocity.Y = direction * Speed;
 		Velocity = velocity;
 		MoveAndSlide();
+
+	}
+
+	public void SetMovement(float direction)
+	{
+		Vector2 velocity = Vector2.Zero;
+		velocity.Y = direction * Speed;
+		Velocity = velocity;
 	}
 }

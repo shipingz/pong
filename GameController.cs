@@ -7,6 +7,8 @@ public partial class GameController : Node2D
 	public int rightScore = 0;
 	public int maxScore = 5;
 	public GameState gameState;
+
+	public PaddleAI paddleAI;
 	public enum GameState
 	{
 		StartingScreen,
@@ -23,7 +25,7 @@ public partial class GameController : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
     {
-        gameState = GameState.StartingScreen;
+        gameState = GameState.Playing;
 		Ball ball = GetNode<Ball>("Ball");
 		ball.ResetBall();
 
@@ -32,6 +34,11 @@ public partial class GameController : Node2D
 
 		leftGoal.BodyEntered += body => ScorePoint(body, Player.Right);
 		rightGoal.BodyEntered += body => ScorePoint(body, Player.Left);
+
+		// Set up AI for the right paddle
+		PaddleControl rightPaddle = GetNode<PaddleControl>("RightPaddle");
+		paddleAI = new PaddleAI(ball, rightPaddle);
+		rightPaddle.IsAIControlled = true;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -39,6 +46,16 @@ public partial class GameController : Node2D
 	{
 	}
 
+	public override void _PhysicsProcess(double delta)
+	{
+		GD.Print("PhysicsProcess");
+		GD.Print("Game state: " + gameState);
+		if (gameState == GameState.Playing)
+		{
+			paddleAI.update();
+			GD.Print("AI updated paddle movement");
+		}
+	}
 
 	public void ScorePoint(Node body,Player player)
 	{
