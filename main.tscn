@@ -1,0 +1,102 @@
+[gd_scene load_steps=13 format=3 uid="uid://b821myv7hqira"]
+
+[ext_resource type="Script" uid="uid://ba4e3mpqpuyas" path="res://PaddleControl.cs" id="1_h2yge"]
+[ext_resource type="Texture2D" uid="uid://b8hpm1dqb4j27" path="res://assets/white_pic.jpeg" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://dqbc35bwrp32c" path="res://GameController.cs" id="1_lquwl"]
+[ext_resource type="Shader" uid="uid://bmdjwpytp0yn2" path="res://BallShader.gdshader" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://bfpyia40eavik" path="res://Ball.cs" id="3_1bvp3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dm0k"]
+size = Vector2(15, 200)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h2yge"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bvp3"]
+shader = ExtResource("2_0xm2m")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_272bh"]
+size = Vector2(19, 537)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vw27"]
+size = Vector2(19, 537)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lquwl"]
+size = Vector2(1237, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
+size = Vector2(1234, 25)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_lquwl")
+
+[node name="LeftPaddle" type="CharacterBody2D" parent="." groups=["paddle_left"]]
+position = Vector2(150, 350)
+script = ExtResource("1_h2yge")
+UpKey = "Up"
+DownKey = "Down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftPaddle"]
+shape = SubResource("RectangleShape2D_7dm0k")
+
+[node name="Sprite2D" type="Sprite2D" parent="LeftPaddle"]
+scale = Vector2(0.029614884, 0.39945382)
+texture = ExtResource("1_ig7tw")
+
+[node name="RightPaddle" type="CharacterBody2D" parent="." groups=["paddle_right"]]
+position = Vector2(1000, 350)
+script = ExtResource("1_h2yge")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightPaddle"]
+shape = SubResource("RectangleShape2D_7dm0k")
+
+[node name="Sprite2D" type="Sprite2D" parent="RightPaddle"]
+scale = Vector2(0.029614884, 0.39945382)
+texture = ExtResource("1_ig7tw")
+
+[node name="Ball" type="CharacterBody2D" parent="."]
+position = Vector2(601, 350)
+script = ExtResource("3_1bvp3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("CircleShape2D_h2yge")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ball"]
+material = SubResource("ShaderMaterial_1bvp3")
+scale = Vector2(0.04, 0.04008)
+texture = ExtResource("1_ig7tw")
+
+[node name="LeftGoal" type="Area2D" parent="." groups=["left_goal"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftGoal"]
+position = Vector2(10, 377)
+shape = SubResource("RectangleShape2D_272bh")
+
+[node name="RightGoal" type="Area2D" parent="." groups=["right_goal"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightGoal"]
+position = Vector2(1142, 371)
+shape = SubResource("RectangleShape2D_5vw27")
+
+[node name="UpWall" type="StaticBody2D" parent="." groups=["wall_up"]]
+position = Vector2(11, -68)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpWall"]
+position = Vector2(587.5, 195)
+shape = SubResource("RectangleShape2D_lquwl")
+
+[node name="Sprite2D" type="Sprite2D" parent="UpWall"]
+position = Vector2(575, 185)
+scale = Vector2(2.438, 0.074320704)
+texture = ExtResource("1_ig7tw")
+
+[node name="DownWall" type="StaticBody2D" parent="." groups=["wall_down"]]
+position = Vector2(3, 443)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DownWall"]
+position = Vector2(575, 180)
+shape = SubResource("RectangleShape2D_7mycd")
+
+[node name="Sprite2D" type="Sprite2D" parent="DownWall"]
+position = Vector2(575, 185)
+scale = Vector2(2.438, 0.074320704)
+texture = ExtResource("1_ig7tw")
