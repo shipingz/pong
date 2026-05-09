@@ -12,7 +12,6 @@ public partial class PaddleControl : CharacterBody2D
 
 	[Export]
 	public bool IsAIControlled = false;
-	public float AIDirection = 0.0f;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -26,26 +25,21 @@ public partial class PaddleControl : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Vector2 velocity = Vector2.Zero;
-		float direction = 0.0f;
 		if (IsAIControlled)
 		{
 			MoveAndSlide();
 			return;
 		}
+		float direction = 0.0f;
 		if (Input.IsActionPressed(UpKey)){
-			GD.Print("Up key pressed");
 			direction -= 1.0f;
-			GD.Print("Direction after up key: " + direction);
 		}
 		if (Input.IsActionPressed(DownKey)){
-			GD.Print("Down key pressed");
 			direction += 1.0f;
 		}
-		velocity.Y = direction * Speed;
+		Vector2 velocity = new Vector2(0, direction * Speed);
 		Velocity = velocity;
 		MoveAndSlide();
-
 	}
 
 	public void SetMovement(float direction)
@@ -53,5 +47,10 @@ public partial class PaddleControl : CharacterBody2D
 		Vector2 velocity = Vector2.Zero;
 		velocity.Y = direction * Speed;
 		Velocity = velocity;
+	}
+
+	public void SetAI(bool isAI)
+	{
+		IsAIControlled = isAI;
 	}
 }

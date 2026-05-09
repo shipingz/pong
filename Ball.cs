@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Numerics;
 
 public partial class Ball : CharacterBody2D
 {
@@ -46,13 +45,10 @@ public partial class Ball : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		//碰撞检测
 		var collision = MoveAndCollide(Velocity * (float)delta);
 		if (collision != null)
 		{
 			Node collider = (Node)collision.GetCollider();
-			String colliderName = collider.Name;
-			GD.Print("Collided with: " + colliderName);
 			if (collider.IsInGroup("wall_up") || collider.IsInGroup("wall_down")){
 				HitWall();
 			}
